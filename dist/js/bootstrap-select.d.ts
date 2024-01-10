@@ -1,0 +1,181 @@
+interface ElementCommon {
+    title?: string;
+    text: string;
+    subtext?: string;
+    content?: any;
+    icon?: any;
+    optID?: number;
+    sanitized?: boolean;
+    element?: HTMLElement;
+    position: number;
+    height: number;
+    posinset: number;
+    display?: string;
+    tokens?: string;
+    headerIndex?: number;
+    lastIndex?: number;
+    value?: string;
+    type: "option" | "divider" | "optgroup-label";
+}
+interface OptionElement extends ElementCommon {
+    type: "option";
+    option?: HtmlSelectPickerOptionElement;
+    optionClass: string;
+    inlineStyle: string;
+    tokens: string;
+    display?: string;
+    value: string;
+    index: number;
+    disabled: boolean;
+    selected: boolean;
+}
+interface DividerElement extends ElementCommon {
+    type: "divider";
+    optID: number;
+}
+interface OptionGroupElement extends ElementCommon {
+    type: 'optgroup-label';
+    optgroup: any;
+    optID: number;
+    display: string;
+    optgroupClass: string;
+}
+type SelectPickerElement = OptionGroupElement | DividerElement | OptionElement;
+interface DataSource {
+    hidden?: boolean;
+    disabled?: boolean;
+    selected?: boolean;
+    text: string;
+    value?: string;
+    children?: DataSource[];
+    className?: string;
+    option?: HTMLOptionElement;
+}
+export interface Options {
+    noneSelectedText: string;
+    noneResultsText: string;
+    countSelectedText: (numSelected: number, numTotal: number) => string;
+    maxOptionsText: ((numAll: number | false, numGroup: number | false) => [string, string]) | string;
+    selectAllText: string;
+    deselectAllText: string;
+    source: {
+        pageSize: number;
+        data?: DataSource[];
+        search?: (callback: (data: DataSource[], more: boolean, totalItems: number) => void, page: number, searchValue?: string) => void;
+    };
+    chunkSize: number;
+    doneButton: boolean;
+    doneButtonText: string;
+    multipleSeparator: string;
+    styleBase: string;
+    style: string;
+    size: "auto" | number | false;
+    title: null;
+    placeholder: string;
+    allowClear: boolean;
+    selectedTextFormat: string;
+    width: false | "auto" | "fit";
+    container: HTMLElement | false;
+    hideDisabled: boolean;
+    showSubtext: boolean;
+    showIcon: boolean;
+    showContent: boolean;
+    dropupAuto: boolean;
+    header: boolean;
+    liveSearch: boolean;
+    liveSearchPlaceholder: null;
+    liveSearchNormalize: boolean;
+    liveSearchStyle: "contains" | "startsWith";
+    actionsBox: boolean;
+    iconBase: string;
+    tickIcon: string;
+    showTick: boolean;
+    template: {
+        caret: string;
+    };
+    maxOptions: false | number;
+    mobile: boolean;
+    selectOnTab: boolean;
+    dropdownAlignRight: "auto" | boolean;
+    windowPadding: [number, number, number, number];
+    virtualScroll: number | boolean;
+    display: boolean | string;
+    sanitize: boolean;
+    sanitizeFn: ((elements: ParentNode[]) => void) | null;
+    whiteList: Record<string, (string | RegExp)[]>;
+}
+type HtmlSelectPickerOptionElement = HTMLOptionElement & {
+    liIndex: number;
+};
+export declare class SelectPicker {
+    readonly element: HTMLSelectElement;
+    private readonly dropdown;
+    private readonly button;
+    private readonly menu;
+    private options;
+    private selectpicker;
+    private readonly sizeInfo;
+    selectId: string;
+    multiple: boolean;
+    autofocus: boolean;
+    private clearButton?;
+    private readonly menuInner;
+    private readonly searchBox?;
+    private readonly bsDropdown;
+    private focusedParent;
+    private noScroll;
+    private activeElement?;
+    private prevActiveElement?;
+    private selectedElement?;
+    private bsContainer?;
+    constructor(element: HTMLSelectElement, options: Partial<Options>);
+    static VERSION: string;
+    static DEFAULTS: Options;
+    createDropdown(): HTMLElement;
+    setPositionData(): void;
+    getSelectedOptions(): OptionElement[];
+    isVirtual(): boolean;
+    createView(isSearching: boolean, setSize?: boolean, refresh?: boolean): void;
+    focusItem(li: HTMLElement, liData?: ElementCommon, noStyle?: boolean): void;
+    defocusItem(li: HTMLElement): void;
+    setPlaceholder(): boolean;
+    fetchData(callback: (count: number) => void, type?: "data" | "search", page?: number, searchValue?: string): void;
+    private filterHidden;
+    private buildDataImpl;
+    private buildData;
+    buildList(size?: number, searching?: boolean): void;
+    findLis(): NodeListOf<Element>;
+    getSelectValues(selectedOptions?: SelectPickerElement[]): string | string[] | null;
+    render(init?: boolean): void;
+    setStyle(newStyle?: string, status?: "add" | "remove"): void;
+    liHeight(refresh?: boolean): void;
+    getSelectPosition(): void;
+    setMenuSize(): void;
+    setSize(refresh?: boolean): void;
+    setWidth(): void;
+    private getContainerPos;
+    selectPosition(): void;
+    createOption(data: OptionElement | HTMLOptionElement, init: boolean): void;
+    setOptionStatus(selectedOnly?: boolean): void;
+    setSelected(liData: OptionElement, selected?: boolean): void;
+    setDisabled(liData: OptionElement): void;
+    isDisabled(): boolean;
+    checkDisabled(): void;
+    clickListener(): void;
+    private showNoResults;
+    liveSearchListener(): void;
+    _searchStyle(): "startsWith" | "contains";
+    val(value?: string | string[]): (string | string[] | undefined);
+    changeAll(status?: boolean): void;
+    selectAll(): void;
+    deselectAll(): void;
+    toggle(state?: boolean): void;
+    open(): void;
+    close(): void;
+    mobile(): void;
+    refresh(options: Partial<Options>): void;
+    hide(): void;
+    show(): void;
+    remove(): void;
+}
+export {};

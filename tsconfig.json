@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noImplicitAny": true,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"sourceMap": true,
+		"moduleResolution": "Node",
+		"allowJs": true,
+		"esModuleInterop": true,
+		"lib": [
+			"dom", "es2017", "es2020"
+		],
+		"strict": true,
+		"strictNullChecks": true,
+		"isolatedModules": true,
+		"outDir": "./dist/js",
+		"declaration": true
+	},
+	"include": ["js/**/*.ts"],
+	"exclude": ["js/umd-intro.js", "js/umd-outro.js"],
+	"sourceMap": true
+}
